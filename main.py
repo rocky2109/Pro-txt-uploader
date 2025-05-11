@@ -824,14 +824,53 @@ async def upload(bot: Client, m: Message):
                     count += 1
                     time.sleep(1)
 
-            except Exception as e:
-                await m.reply_text(f'‼️𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗶𝗻𝗴 𝗙𝗮𝗶𝗹𝗲𝗱‼️\n\n'
-                                   f'📝𝗡𝗮𝗺𝗲 » `{name}`\n\n'
-                                   f'🔗𝗨𝗿𝗹 » <a href="{url}">__**Click Here to See Link**__</a>`')
-                                   
-                count += 1
-                failed_count += 1
-                continue   
+            # Initialize a list to track failed URLs
+failed_urls = []
+
+try:
+    for i in range(count - 1, len(links)):
+        # Existing URL and command setup logic here...
+
+        try:
+            # Attempt to process the URL (e.g., download or perform actions)
+            # If successful:
+            count += 1
+            time.sleep(1)
+    
+        except Exception as e:
+            # Add failed URL to the list
+            failed_urls.append(url)
+
+            # Notify user of the failure
+            await m.reply_text(f'‼️𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗶𝗻𝗴 𝗙𝗮𝗶𝗹𝗲𝗱‼️\n\n'
+                               f'📝𝗡𝗮𝗺𝗲 » `{name}`\n\n'
+                               f'🔗𝗨𝗿𝗹 » <a href="{url}">__**Click Here to See Link**__</a>`')
+
+            count += 1
+            failed_count += 1
+            continue
+
+except Exception as e:
+    await m.reply_text(str(e))
+
+# At the end of processing, che,,ck if there are failed URLs
+if failed_urls:
+    # Generate a unique token for the failed URLs file
+    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    failed_file_name = f"failed_urls_{timestamp}.txt"
+
+    # Write failed URLs to a .txt file
+    with open(failed_file_name, 'w') as failed_file:
+        failed_file.write("\n".join(failed_urls))
+
+    # Send the .txt file to the user
+    await m.reply_document(
+        document=failed_file_name,
+        caption="🚨 **Failed URLs Summary**.\n\n📂 **File Name:** `failed_urls.txt`\n🛠️ **Please check the links and retry.**"
+    )
+
+    # Clean up the file after sending
+    os.remove(failed_file_name)  
                 
 
     except Exception as e:
