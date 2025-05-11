@@ -825,7 +825,7 @@ async def upload(bot: Client, m: Message):
                     time.sleep(1)
 
             # Initialize a list to track failed URLs
-                   failed_urls = []
+                  # failed_urls = []
 
        try:
             for i in range(count - 1, len(links)):
