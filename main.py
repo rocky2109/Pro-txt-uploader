@@ -825,10 +825,10 @@ async def upload(bot: Client, m: Message):
                     time.sleep(1)
 
             # Initialize a list to track failed URLs
-failed_urls = []
+                   failed_urls = []
 
-try:
-    for i in range(count - 1, len(links)):
+       try:
+            for i in range(count - 1, len(links)):
         # Existing URL and command setup logic here...
 
         try:
@@ -850,16 +850,16 @@ try:
             failed_count += 1
             continue
 
-except Exception as e:
-    await m.reply_text(str(e))
+     except Exception as e:
+         await m.reply_text(str(e))
 
 # At the end of processing, che,,ck if there are failed URLs
-if failed_urls:
-    # Generate a unique token for the failed URLs file
-    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-    failed_file_name = f"failed_urls_{timestamp}.txt"
+    if failed_urls:
+        # Generate a unique token for the failed URLs file
+        timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        failed_file_name = f"failed_urls_{timestamp}.txt"
 
-    # Write failed URLs to a .txt file
+        # Write failed URLs to a .txt file
     with open(failed_file_name, 'w') as failed_file:
         failed_file.write("\n".join(failed_urls))
 
